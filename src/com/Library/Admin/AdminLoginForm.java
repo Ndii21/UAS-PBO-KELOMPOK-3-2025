@@ -2,26 +2,31 @@ package com.Library.Admin;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 public class AdminLoginForm extends JFrame {
 
-    private final Color PRIMARY_GREEN = new Color(67, 160, 71); // Similar to Anggota Login
-    private final Color DARK_GREEN = new Color(46, 125, 50);
-    private final Color BG_LIGHT = new Color(240, 255, 240); // Light background
+    private final Color PRIMARY_BLUE = new Color(33, 150, 243);
+    private final Color DARK_BLUE = new Color(25, 118, 210);
+    private final Color BG_LIGHT = new Color(248, 250, 255);
     private final Color TEXT_COLOR = new Color(50, 50, 50);
 
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
+    private JButton registerLinkButton; 
     private JLabel errorLabel;
-    private AdminAuthDAO adminAuthDAO;
 
     public AdminLoginForm() {
-        adminAuthDAO = new AdminAuthDAO();
-
-        setTitle("Admin Login - Perpustakaan Mari Maca");
+        setTitle("Login Admin - Perpustakaan MariMaca");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1920, 1080); // Slightly smaller or adjust as needed
+        setSize(400, 350); 
         setLocationRelativeTo(null);
         getContentPane().setBackground(BG_LIGHT);
         setLayout(new GridBagLayout());
@@ -32,20 +37,20 @@ public class AdminLoginForm extends JFrame {
 
     private void initComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 15, 10, 15); // Adjusted insets for a cleaner look
+        gbc.insets = new Insets(8, 10, 8, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Title
-        JLabel titleLabel = new JLabel("ADMIN LOGIN", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("LOGIN ADMIN", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        titleLabel.setForeground(DARK_GREEN);
+        titleLabel.setForeground(DARK_BLUE);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 15, 15, 15);
+        gbc.insets = new Insets(15, 10, 10, 10); 
         add(titleLabel, gbc);
 
-        gbc.insets = new Insets(10, 15, 10, 15); // Reset insets
+        gbc.insets = new Insets(8, 10, 8, 10); 
 
         // Username Label
         JLabel usernameLabel = new JLabel("Username:");
@@ -53,16 +58,12 @@ public class AdminLoginForm extends JFrame {
         usernameLabel.setForeground(TEXT_COLOR);
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 1; // Explicitly set gridwidth
+        gbc.gridwidth = 1;
         add(usernameLabel, gbc);
 
         // Username Field
         usernameField = new JTextField(20);
         usernameField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        usernameField.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(PRIMARY_GREEN, 1),
-            BorderFactory.createEmptyBorder(5, 8, 5, 8)
-        ));
         gbc.gridx = 1;
         gbc.gridy = 1;
         add(usernameField, gbc);
@@ -78,71 +79,113 @@ public class AdminLoginForm extends JFrame {
         // Password Field
         passwordField = new JPasswordField(20);
         passwordField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-         passwordField.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(PRIMARY_GREEN, 1),
-            BorderFactory.createEmptyBorder(5, 8, 5, 8)
-        ));
         gbc.gridx = 1;
         gbc.gridy = 2;
         add(passwordField, gbc);
-
+        
         // Error Label
-        errorLabel = new JLabel(" ", SwingConstants.CENTER); // Start with a space to maintain layout
+        errorLabel = new JLabel(" ", SwingConstants.CENTER); 
         errorLabel.setFont(new Font("Segoe UI", Font.ITALIC, 12));
-        errorLabel.setForeground(new Color(220, 20, 60)); // Crimson red for errors
+        errorLabel.setForeground(Color.RED);
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(0, 15, 5, 15); // Reduced bottom inset
+        gbc.insets = new Insets(0, 10, 0, 10); 
         add(errorLabel, gbc);
+
+        gbc.insets = new Insets(8, 10, 8, 10); 
 
         // Login Button
         loginButton = new JButton("Login");
         loginButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        loginButton.setBackground(PRIMARY_GREEN);
+        loginButton.setBackground(PRIMARY_BLUE);
         loginButton.setForeground(Color.WHITE);
         loginButton.setFocusPainted(false);
-        loginButton.setPreferredSize(new Dimension(120, 40)); // Consistent button size
-        loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        loginButton.setBorder(BorderFactory.createRaisedBevelBorder());
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Panel to center the button
-        buttonPanel.setBackground(BG_LIGHT);
-        buttonPanel.add(loginButton);
-
+        loginButton.setPreferredSize(new Dimension(100, 35));
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 4; 
         gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.NONE; // Don't stretch button panel
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(10, 15, 20, 15); // Add some bottom padding
-        add(buttonPanel, gbc);
+        gbc.fill = GridBagConstraints.NONE; 
+        add(loginButton, gbc);
+
+        // Register Link/Button
+        registerLinkButton = new JButton("Belum punya akun admin? Register di sini");
+        registerLinkButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        registerLinkButton.setForeground(DARK_BLUE); 
+        registerLinkButton.setBorderPainted(false);
+        registerLinkButton.setContentAreaFilled(false);
+        registerLinkButton.setOpaque(false);
+        registerLinkButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        gbc.gridx = 0;
+        gbc.gridy = 5; 
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(0, 10, 10, 10); 
+        add(registerLinkButton, gbc);
     }
 
     private void addListeners() {
-        loginButton.addActionListener(e -> performAdminLogin());
-        passwordField.addActionListener(e -> performAdminLogin()); // Allow login on Enter in password field
+
+        loginButton.addActionListener(e -> performLogin());
+        passwordField.addActionListener(e -> performLogin());
+
+        // Listener untuk tombol/link registrasi admin
+        registerLinkButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Tutup form login saat ini
+                new AdminRegisterForm().setVisible(true); // Buka form registrasi admin
+            }
+        });
     }
 
-    private void performAdminLogin() {
+    private void performLogin() {
         String username = usernameField.getText().trim();
-        String password = new String(passwordField.getPassword());
+        String passwordInput = new String(passwordField.getPassword());
 
-        if (username.isEmpty() || password.isEmpty()) {
+        if (username.isEmpty() || passwordInput.isEmpty()) {
             errorLabel.setText("Username dan password tidak boleh kosong.");
             return;
         }
-        errorLabel.setText(" "); // Clear previous errors
+        errorLabel.setText(" "); // Bersihkan error sebelumnya
 
-        if (adminAuthDAO.validateAdmin(username, password)) {
-            JOptionPane.showMessageDialog(this,
-                    "Login Admin Berhasil!",
-                    "Sukses",
-                    JOptionPane.INFORMATION_MESSAGE);
-            dispose(); // Close the login form
-            new DashboardFrame().setVisible(true); // Open the admin dashboard
-        } else {
-            errorLabel.setText("Username atau password admin salah.");
+        String sql = "SELECT password, id FROM admin WHERE username = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String storedHashedPassword = rs.getString("password");
+                
+
+                // Verifikasi password menggunakan PasswordUtil
+                if (PasswordUtil.verifyPassword(passwordInput, storedHashedPassword)) { 
+                    JOptionPane.showMessageDialog(this, 
+                        "Login berhasil! Selamat datang Admin.", 
+                        "Sukses", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    
+                    dispose(); // Tutup AdminLoginForm
+                    
+                    // Buka AdminDashboardFrame
+                    DashboardFrame dashboard = new DashboardFrame();
+                    dashboard.setVisible(true);
+                } else {
+                    errorLabel.setText("Username atau password salah.");
+                }
+            } else {
+                errorLabel.setText("Username atau password salah.");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            errorLabel.setText("Terjadi kesalahan database. Silakan coba lagi.");
+        } catch (RuntimeException rex) { // Untuk menangkap error dari PasswordUtil jika ada
+             rex.printStackTrace();
+             errorLabel.setText("Terjadi kesalahan sistem saat verifikasi.");
         }
     }
 }

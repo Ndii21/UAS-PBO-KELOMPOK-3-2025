@@ -13,11 +13,9 @@ public class PengumumanDAO {
     private Connection connection;
 
     public PengumumanDAO() {
-        this.connection = DBConnection.getConnection(); // Pastikan DBConnection.java ada dan berfungsi
+        this.connection = DBConnection.getConnection();
         if (this.connection == null) {
-            System.err.println("KRITIS: Koneksi database gagal didapatkan di PengumumanDAO.");
-            // Pertimbangkan untuk melempar RuntimeException agar aplikasi tidak lanjut dengan state tidak valid
-            // throw new RuntimeException("Tidak dapat terkoneksi ke database.");
+            System.err.println("Koneksi database gagal didapatkan di PengumumanDAO.");
         }
     }
 
@@ -70,7 +68,7 @@ public class PengumumanDAO {
         return daftarPengumuman;
     }
 
-    public Pengumuman getPengumumanById(int id) { // Metode ini mungkin berguna
+    public Pengumuman getPengumumanById(int id) { 
         if (connection == null) return null;
         String sql = "SELECT id_pengumuman, judul, isi, tanggal_dibuat FROM pengumuman WHERE id_pengumuman = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -131,7 +129,7 @@ public class PengumumanDAO {
         List<Pengumuman> daftarPengumuman = new ArrayList<>();
         if (connection == null) return daftarPengumuman;
         String sql = "SELECT id_pengumuman, judul, isi, tanggal_dibuat FROM pengumuman " +
-                     "WHERE judul LIKE ? OR isi LIKE ? " + // Cari di judul atau isi
+                     "WHERE judul LIKE ? OR isi LIKE ? " + // Kriteria pencarian pengumuman
                      "ORDER BY tanggal_dibuat DESC, id_pengumuman DESC";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             String searchPattern = "%" + keyword + "%";
@@ -152,20 +150,6 @@ public class PengumumanDAO {
             e.printStackTrace();
         }
         return daftarPengumuman;
-    }
-
-     public int getTotalPengumuman() {
-        if (connection == null) return 0;
-        String sql = "SELECT COUNT(*) as total FROM pengumuman";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            if (rs.next()) {
-                return rs.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 }
 

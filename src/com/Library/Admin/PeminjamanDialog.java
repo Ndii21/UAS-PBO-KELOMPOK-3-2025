@@ -365,7 +365,7 @@ public class PeminjamanDialog extends JDialog {
     }
 
     private void showError(String message) {
-        JOptionPane.showMessageDialog(this, "⚠️ " + message, "Input Error", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Warning!" + message, "Input Error", JOptionPane.WARNING_MESSAGE);
     }
 
     public boolean isConfirmed() {

@@ -15,19 +15,18 @@ import javax.swing.table.TableColumn;
 
 public class RiwayatPanel extends JPanel {
 
-    // Warna konsisten dengan DashboardFrame
     private final Color PRIMARY_GREEN = new Color(67, 160, 71);
     private final Color BG_LIGHT = new Color(248, 252, 248);
     private final Color TEXT_PRIMARY = new Color(33, 33, 33);
     private final Color TEXT_SECONDARY = new Color(117, 117, 117);
     private final Color BORDER_COLOR = new Color(230, 230, 230);
     private final Color CARD_BG = Color.WHITE;
-    private final Color HEADER_BG = new Color(240, 240, 240); // Warna header tabel
+    private final Color HEADER_BG = new Color(240, 240, 240);
 
     private JTable riwayatTable;
     private DefaultTableModel tableModel;
     private final int loggedInMemberId;
-    private JPanel centerContentPanel; // Panel untuk menukar antara tabel dan pesan kosong
+    private JPanel centerContentPanel; 
     private JLabel emptyMessageLabel;
     private JScrollPane scrollPane;
 
@@ -39,8 +38,8 @@ public class RiwayatPanel extends JPanel {
 
     private void initComponents() {
         setBackground(BG_LIGHT);
-        setLayout(new BorderLayout(15, 15)); // Sedikit jarak antar komponen
-        setBorder(new EmptyBorder(25, 25, 25, 25)); // Padding standar
+        setLayout(new BorderLayout(15, 15)); 
+        setBorder(new EmptyBorder(25, 25, 25, 25)); 
 
         JLabel titleLabel = new JLabel("Riwayat Peminjaman Anda");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
@@ -70,7 +69,7 @@ public class RiwayatPanel extends JPanel {
 
         // Panel tengah untuk menampung tabel atau pesan kosong
         centerContentPanel = new JPanel(new CardLayout());
-        centerContentPanel.setBackground(BG_LIGHT); // Pastikan background konsisten
+        centerContentPanel.setBackground(BG_LIGHT);
         centerContentPanel.add(scrollPane, "TABLE_VIEW");
         centerContentPanel.add(emptyMessageLabel, "EMPTY_VIEW");
 
@@ -94,7 +93,7 @@ public class RiwayatPanel extends JPanel {
         header.setBorder(BorderFactory.createLineBorder(BORDER_COLOR));
         header.setReorderingAllowed(false);
 
-        // Atur lebar kolom (opsional, bisa disesuaikan)
+        // Atur lebar kolom 
         TableColumn column;
         column = riwayatTable.getColumnModel().getColumn(0); // Judul Buku
         column.setPreferredWidth(250);
@@ -118,10 +117,10 @@ public class RiwayatPanel extends JPanel {
                      "WHERE p.id_anggota = ? " +
                      "ORDER BY p.tanggal_pinjam DESC";
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); // Format tanggal yang lebih ringkas
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); // Format tanggal
         boolean hasData = false;
 
-        try (Connection conn = DBConnection.getConnection(); // Pastikan DBConnection.java ada dan berfungsi
+        try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, loggedInMemberId);
@@ -163,7 +162,7 @@ public class RiwayatPanel extends JPanel {
         }
     }
 
-    // Metode untuk memuat ulang data jika diperlukan dari luar (misalnya, saat panel ditampilkan)
+    // Metode untuk memuat ulang data
     public void refreshData() {
         loadRiwayatPeminjaman();
     }

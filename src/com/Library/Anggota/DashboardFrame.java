@@ -300,7 +300,6 @@ public class DashboardFrame extends JFrame {
                     JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
                 this.dispose();
-                // TODO: Show login frame
             }
         });
 
@@ -451,7 +450,6 @@ public class DashboardFrame extends JFrame {
 
     statsPanel.add(createStatItem("📚", "Buku Dipinjam", String.valueOf(borrowedBooksCount)));
     statsPanel.add(createStatItem("⏰", "Jatuh Tempo", allDueDates));
-    // Removed "Total Bacaan" as requested
 
     statusPanel.add(statsPanel);
 

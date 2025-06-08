@@ -1,4 +1,4 @@
-package com.Library.Anggota; // Assuming it's in the same package structure
+package com.Library.Anggota;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -14,17 +14,15 @@ import javax.swing.border.EmptyBorder;
 
 public class PengumumanPanel extends JPanel {
 
-    // Re-declare some colors for styling (ideally, these would come from a shared theme class)
     private final Color CARD_BG = new Color(255, 255, 255);
     private final Color TEXT_PRIMARY = new Color(33, 33, 33);
     private final Color TEXT_SECONDARY = new Color(117, 117, 117);
     private final Color BORDER_COLOR = new Color(230, 230, 230);
     private final Color BG_LIGHT = new Color(248, 252, 248);
-    private final Color PRIMARY_GREEN = new Color(67, 160, 71); // For titles or accents
+    private final Color PRIMARY_GREEN = new Color(67, 160, 71); 
 
     private JPanel announcementsContainer;
 
-    // Data structure for an announcement (can be a separate class or record)
     private static class Announcement {
         String title;
         String content;
@@ -67,10 +65,9 @@ public class PengumumanPanel extends JPanel {
 
     private void loadAnnouncements() {
         List<Announcement> announcements = new ArrayList<>();
-        // Assuming your table has: id_pengumuman, judul_pengumuman, isi_pengumuman, tanggal_publish, penulis
         String sql = "SELECT id_pengumuman, judul, isi, tanggal_dibuat FROM pengumuman ORDER BY tanggal_dibuat DESC";
 
-        try (Connection conn = DBConnection.getConnection(); // Assumes DBConnection class from your DashboardFrame
+        try (Connection conn = DBConnection.getConnection(); 
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
@@ -79,17 +76,13 @@ public class PengumumanPanel extends JPanel {
                 String content = rs.getString("isi");
                 java.sql.Timestamp publishTimestamp = rs.getTimestamp("tanggal_dibuat");
                 Date publishDate = (publishTimestamp != null) ? new Date(publishTimestamp.getTime()) : null;
-                announcements.add(new Announcement(title, content, publishDate, "Admin")); // Assuming author is "Admin" for simplicity
+                announcements.add(new Announcement(title, content, publishDate, "Admin"));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             // Show error message on the panel itself or a JOptionPane
             announcementsContainer.add(new JLabel("Gagal memuat pengumuman: " + e.getMessage()));
-            // Optionally, show a JOptionPane
-            // JOptionPane.showMessageDialog(this,
-            // "Gagal mengambil data pengumuman: " + e.getMessage(),
-            // "Database Error", JOptionPane.ERROR_MESSAGE);
         }
 
         displayAnnouncements(announcements);
@@ -126,15 +119,7 @@ public class PengumumanPanel extends JPanel {
                 BorderFactory.createLineBorder(BORDER_COLOR, 1),
                 new EmptyBorder(15, 20, 15, 20)
         ));
-        // Optional: Add a subtle shadow like in DashboardFrame
-        // card.setBorder(BorderFactory.createCompoundBorder(
-        // BorderFactory.createMatteBorder(0, 0, 2, 2, new Color(0,0,0,15)), // Shadow
-        // BorderFactory.createCompoundBorder(
-        // BorderFactory.createLineBorder(BORDER_COLOR, 1), // Actual border
-        // new EmptyBorder(15, 20, 15, 20) // Padding
-        // )
-        // ));
-        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200)); // Limit height, or adjust as needed
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
         card.setMinimumSize(new Dimension(300, 100));
 
 
@@ -148,12 +133,9 @@ public class PengumumanPanel extends JPanel {
         contentArea.setForeground(TEXT_SECONDARY);
         contentArea.setWrapStyleWord(true);
         contentArea.setLineWrap(true);
-        contentArea.setOpaque(false); // Make it transparent to show card background
+        contentArea.setOpaque(false); 
         contentArea.setEditable(false);
         contentArea.setFocusable(false);
-        // To make JTextArea adjust its height, put it in a JScrollPane, or manage its size.
-        // For simplicity, if content is very long, the card will expand.
-        // A JScrollPane per card might be too much if many cards.
         card.add(contentArea, BorderLayout.CENTER);
 
 

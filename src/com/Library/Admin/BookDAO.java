@@ -115,30 +115,4 @@ public class BookDAO {
 
         return books;
     }
-
-    public int getTotalBooks() {
-        String sql = "SELECT COUNT(*) as total FROM buku";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            if (rs.next()) {
-                return rs.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public int getAvailableBooks() {
-        String sql = "SELECT COUNT(*) as total FROM buku WHERE status = 'Tersedia'";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            if (rs.next()) {
-                return rs.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
 }

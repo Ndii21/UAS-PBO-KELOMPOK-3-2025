@@ -20,7 +20,7 @@ public class MemberManagementPanel extends JPanel {
     private JButton addButton, editButton, deleteButton, refreshButton, searchButton, printCardButton;
     private JLabel statusLabel;
     
-    // Warna hijau theme sama seperti BookManagementPanel
+
     private final Color PRIMARY_GREEN = new Color(34, 139, 34);      // Forest Green
     private final Color LIGHT_GREEN = new Color(144, 238, 144);      // Light Green
     private final Color DARK_GREEN = new Color(0, 100, 0);           // Dark Green
@@ -460,11 +460,11 @@ public class MemberManagementPanel extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         
             int cardWidth = 400;
-            int cardHeight = 280; // Tinggi kartu diperbesar untuk memberikan ruang lebih
+            int cardHeight = 280; 
             int margin = 50;
         
             // Draw card border dengan rounded rectangle
-            g2d.setColor(new Color(102, 165, 130)); // Soft Green
+            g2d.setColor(new Color(102, 165, 130));
             g2d.setStroke(new BasicStroke(3));
             g2d.drawRoundRect(margin, margin, cardWidth, cardHeight, 15, 15);
         
@@ -498,7 +498,7 @@ public class MemberManagementPanel extends JPanel {
             // Data anggota
             g2d.setColor(Color.BLACK);
             int startY = margin + 115;
-            int lineHeight = 16; // Dikurangi sedikit untuk menghemat ruang
+            int lineHeight = 16; 
         
             // ID Anggota dengan highlight
             g2d.setFont(new Font("Arial", Font.BOLD, 12));
@@ -533,7 +533,7 @@ public class MemberManagementPanel extends JPanel {
             g2d.drawString("Tgl. Daftar", margin + 20, startY);
             g2d.drawString(": " + member.getTanggalDaftar(), margin + 120, startY);
         
-            startY += lineHeight + 3; // Beri jarak lebih untuk status
+            startY += lineHeight + 3; 
             String status = "1".equals(member.getStatusAktif()) ? "AKTIF" : "TIDAK AKTIF";
             g2d.drawString("Status", margin + 20, startY);
         
@@ -547,13 +547,13 @@ public class MemberManagementPanel extends JPanel {
             g2d.setFont(new Font("Arial", Font.BOLD, 11));
             g2d.drawString(": " + status, margin + 120, startY);
         
-            // Footer dengan garis dan informasi tambahan - dipindah ke posisi yang lebih bawah
-            g2d.setColor(new Color(102, 165, 130)); // Soft Green
+            // Footer dengan garis dan informasi tambahan
+            g2d.setColor(new Color(102, 165, 130)); 
             g2d.setStroke(new BasicStroke(2));
-            int footerLineY = margin + cardHeight - 55; // Posisi garis footer lebih tinggi
+            int footerLineY = margin + cardHeight - 55; // Posisi garis footer 
             g2d.drawLine(margin + 20, footerLineY, margin + cardWidth - 20, footerLineY);
         
-            // Teks footer dengan spacing yang lebih baik
+            // Teks footer
             g2d.setFont(new Font("Arial", Font.ITALIC, 9));
             g2d.setColor(new Color(100, 100, 100));
             g2d.drawString("Kartu ini adalah bukti keanggotaan resmi dan berlaku selama status aktif", 
@@ -561,7 +561,7 @@ public class MemberManagementPanel extends JPanel {
             g2d.drawString("Harap dibawa setiap kali mengunjungi perpustakaan", 
                     margin + 20, footerLineY + 30);
         
-            // Nomor seri kartu (kecil di pojok) - posisi disesuaikan
+            // Nomor seri kartu
             g2d.setFont(new Font("Arial", Font.PLAIN, 8));
             g2d.setColor(Color.LIGHT_GRAY);
             String serialNumber = "PD-" + member.getIdAnggota() + "-" + 

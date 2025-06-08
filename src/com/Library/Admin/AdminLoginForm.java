@@ -2,8 +2,6 @@ package com.Library.Admin;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,13 +18,12 @@ public class AdminLoginForm extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
-    private JButton registerLinkButton; 
     private JLabel errorLabel;
 
     public AdminLoginForm() {
         setTitle("Login Admin - Perpustakaan MariMaca");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 350); 
+        setSize(400, 300); 
         setLocationRelativeTo(null);
         getContentPane().setBackground(BG_LIGHT);
         setLayout(new GridBagLayout());
@@ -108,36 +105,11 @@ public class AdminLoginForm extends JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE; 
         add(loginButton, gbc);
-
-        // Register Link/Button
-        registerLinkButton = new JButton("Belum punya akun admin? Register di sini");
-        registerLinkButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        registerLinkButton.setForeground(DARK_BLUE); 
-        registerLinkButton.setBorderPainted(false);
-        registerLinkButton.setContentAreaFilled(false);
-        registerLinkButton.setOpaque(false);
-        registerLinkButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        gbc.gridx = 0;
-        gbc.gridy = 5; 
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(0, 10, 10, 10); 
-        add(registerLinkButton, gbc);
     }
 
     private void addListeners() {
-
         loginButton.addActionListener(e -> performLogin());
         passwordField.addActionListener(e -> performLogin());
-
-        // Listener untuk tombol/link registrasi admin
-        registerLinkButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose(); // Tutup form login saat ini
-                new AdminRegisterForm().setVisible(true); // Buka form registrasi admin
-            }
-        });
     }
 
     private void performLogin() {
@@ -158,11 +130,10 @@ public class AdminLoginForm extends JFrame {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                String storedHashedPassword = rs.getString("password");
+                String storedPassword = rs.getString("password");
                 
-
-                // Verifikasi password menggunakan PasswordUtil
-                if (PasswordUtil.verifyPassword(passwordInput, storedHashedPassword)) { 
+                // Verifikasi password
+                if (passwordInput.equals(storedPassword)) { 
                     JOptionPane.showMessageDialog(this, 
                         "Login berhasil! Selamat datang Admin.", 
                         "Sukses", 
@@ -183,9 +154,6 @@ public class AdminLoginForm extends JFrame {
         } catch (SQLException ex) {
             ex.printStackTrace();
             errorLabel.setText("Terjadi kesalahan database. Silakan coba lagi.");
-        } catch (RuntimeException rex) { // Untuk menangkap error dari PasswordUtil jika ada
-             rex.printStackTrace();
-             errorLabel.setText("Terjadi kesalahan sistem saat verifikasi.");
         }
     }
 }

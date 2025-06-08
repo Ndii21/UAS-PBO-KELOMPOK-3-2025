@@ -17,13 +17,11 @@ public class PeminjamanManagementPanel extends JPanel {
     private JLabel statusLabel;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
-
-    // Warna dari BookManagementPanel (atau DashboardFrame)
     private final Color PRIMARY_GREEN = new Color(34, 139, 34);      // Forest Green
     private final Color LIGHT_GREEN = new Color(144, 238, 144);     // Light Green
     private final Color DARK_GREEN = new Color(0, 100, 0);          // Dark Green
     private final Color ACCENT_GREEN = new Color(50, 205, 50);      // Lime Green
-    private final Color BG_GREEN = new Color(240, 255, 240);        // Honeydew (background panel)
+    private final Color BG_GREEN = new Color(240, 255, 240);        // Honeydew
 
     public PeminjamanManagementPanel() {
         peminjamanDAO = new PeminjamanDAO();
@@ -69,7 +67,7 @@ public class PeminjamanManagementPanel extends JPanel {
         peminjamanTable.getColumnModel().getColumn(6).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
-                                                       boolean isSelected, boolean hasFocus, int row, int column) {
+                boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (!isSelected) {
                     String status = (String) value;
@@ -77,7 +75,7 @@ public class PeminjamanManagementPanel extends JPanel {
                         c.setBackground(new Color(255, 255, 220)); // Light Yellow
                         c.setForeground(new Color(139, 69, 19));   // SaddleBrown
                     } else if ("Dikembalikan".equalsIgnoreCase(status)) {
-                        c.setBackground(new Color(220, 255, 220)); // Light Green (mirip tersedia di buku)
+                        c.setBackground(new Color(220, 255, 220)); // Light Green
                         c.setForeground(DARK_GREEN);
                     } else if ("Terlambat".equalsIgnoreCase(status)) {
                         c.setBackground(new Color(255, 200, 200)); // Light Red

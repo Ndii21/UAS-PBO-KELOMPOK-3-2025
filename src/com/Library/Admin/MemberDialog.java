@@ -140,7 +140,10 @@ public class MemberDialog extends JDialog {
         
         addFormField(formPanel, gbc, 2, "No. Telepon:", noTeleponField);
         addFormField(formPanel, gbc, 3, "Email:", emailField);
-        addFormField(formPanel, gbc, 4, "Status:", statusComboBox);
+        // Status hanya jika member tidak null (edit)
+        if (member != null) {
+            addFormField(formPanel, gbc, 4, "Status:", statusComboBox);
+        }
 
         // Tambahan info tanggal daftar jika edit
         if (member != null) {
@@ -257,7 +260,7 @@ public class MemberDialog extends JDialog {
 
     private void showError(String message) {
         JOptionPane.showMessageDialog(this,
-            "⚠️ " + message,
+            "Warning! " + message,
             "Input Error",
             JOptionPane.WARNING_MESSAGE);
     }

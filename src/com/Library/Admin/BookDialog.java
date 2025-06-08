@@ -217,7 +217,7 @@ public class BookDialog extends JDialog {
 
     private void showError(String message) {
         JOptionPane.showMessageDialog(this,
-            "⚠️ " + message,
+            "Warning!" + message,
             "Input Error",
             JOptionPane.WARNING_MESSAGE);
     }

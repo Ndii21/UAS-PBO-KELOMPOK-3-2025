@@ -8,6 +8,7 @@ public class DashboardFrame extends JFrame {
     private JButton memberListButton;
     private JButton peminjamanButton;
     private JButton pengumumanButton;
+    private JButton pengunjungButton;
     private JButton logoutButton;
     private JButton homeButton;
     private JLabel logoLabel;
@@ -17,6 +18,7 @@ public class DashboardFrame extends JFrame {
     private MemberManagementPanel MemberManagementPanel;
     private PeminjamanManagementPanel peminjamanManagementPanel; 
     private PengumumanManagementPanel pengumumanManagementPanel;
+    private PengunjungManagementPanel pengunjungManagementPanel;
 
     private final String LOGO_PATH = "image/logo.jpg";
 
@@ -41,15 +43,16 @@ public class DashboardFrame extends JFrame {
         setSize(1400, 800);
         setLocationRelativeTo(null);
 
-        logoLabel = new JLabel("", SwingConstants.CENTER);
+        logoLabel = new JLabel();
 
         homeButton = new JButton("HOME");
         bookListButton = new JButton("DAFTAR BUKU");
         memberListButton = new JButton("DAFTAR ANGGOTA");
         peminjamanButton = new JButton("PEMINJAMAN"); 
         pengumumanButton = new JButton("PENGUMUMAN");
+        pengunjungButton = new JButton("PENGUNJUNG");
         logoutButton = new JButton("KELUAR");
-
+        
         logoutButton.setBackground(new Color(139, 0, 0));
         logoutButton.setForeground(Color.WHITE);
         logoutButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -62,18 +65,19 @@ public class DashboardFrame extends JFrame {
         logoutButton.setContentAreaFilled(true);
         logoutButton.setHorizontalAlignment(SwingConstants.LEFT);
         
-
         styleActiveButton(homeButton);
         styleSidebarButton(bookListButton);
         styleSidebarButton(memberListButton);
         styleSidebarButton(peminjamanButton); 
         styleSidebarButton(pengumumanButton);
+        styleSidebarButton(pengunjungButton);
 
         createHomePanel();
         bookManagementPanel = new BookManagementPanel();
         MemberManagementPanel = new MemberManagementPanel();
         peminjamanManagementPanel = new PeminjamanManagementPanel();
         pengumumanManagementPanel = new PengumumanManagementPanel();
+        pengunjungManagementPanel = new PengunjungManagementPanel();
 
         mainContentPanel = new JPanel(new CardLayout());
         mainContentPanel.setBackground(BG_LIGHT);
@@ -126,42 +130,49 @@ public class DashboardFrame extends JFrame {
         styleSidebarButton(memberListButton);
         styleSidebarButton(peminjamanButton);
         styleSidebarButton(pengumumanButton);
+        styleSidebarButton(pengunjungButton);
 
         styleActiveButton(activeButton);
     }
 
     private void createHomePanel() {
-        homePanel = new JPanel(new GridBagLayout());
-        homePanel.setBackground(BG_LIGHT);
+    // Inisialisasi panel utama dengan GridBagLayout dan background terang
+    homePanel = new JPanel(new GridBagLayout());
+    homePanel.setBackground(BG_LIGHT);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(0, 0, 30, 0);
+    // Setup constraint untuk positioning komponen
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.anchor = GridBagConstraints.CENTER;
+    gbc.insets = new Insets(0, 0, 30, 0);
 
-        JPanel logoSection = new JPanel(new GridBagLayout());
-        logoSection.setBackground(Color.WHITE);
-        logoSection.setPreferredSize(new Dimension(250, 250));
-        logoSection.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(PRIMARY_GREEN, 3),
-            BorderFactory.createEmptyBorder(20, 20, 20, 20)
-        ));
-        logoSection.add(logoLabel);
+    // Section logo dengan border hijau dan background putih
+    JPanel logoSection = new JPanel(new GridBagLayout());
+    logoSection.setBackground(Color.WHITE);
+    logoSection.setPreferredSize(new Dimension(250, 250));
+    logoSection.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(PRIMARY_GREEN, 3),
+        BorderFactory.createEmptyBorder(20, 20, 20, 20)
+    ));
+    logoSection.add(logoLabel);
 
-        homePanel.add(logoSection, gbc);
+    // Tambahkan logo section ke panel utama
+    homePanel.add(logoSection, gbc);
 
-        gbc.gridy = 1;
-        JLabel welcomeLabel1 = new JLabel("Selamat Menikmati Layanan Online", SwingConstants.CENTER);
-        welcomeLabel1.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        welcomeLabel1.setForeground(DARK_GREEN);
-        homePanel.add(welcomeLabel1, gbc);
+    // Tambahkan label welcome pertama - "Selamat Menikmati Layanan Online"
+    gbc.gridy = 1;
+    JLabel welcomeLabel1 = new JLabel("Selamat Menikmati Layanan Online", SwingConstants.CENTER);
+    welcomeLabel1.setFont(new Font("Segoe UI", Font.BOLD, 28));
+    welcomeLabel1.setForeground(DARK_GREEN);
+    homePanel.add(welcomeLabel1, gbc);
 
-        gbc.gridy = 2;
-        JLabel welcomeLabel2 = new JLabel("Perpustakaan Mari Maca", SwingConstants.CENTER);
-        welcomeLabel2.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        welcomeLabel2.setForeground(DARK_GREEN);
-        homePanel.add(welcomeLabel2, gbc);
+    // Tambahkan label welcome kedua - "Perpustakaan Mari Maca"
+    gbc.gridy = 2;
+    JLabel welcomeLabel2 = new JLabel("Perpustakaan Mari Maca", SwingConstants.CENTER);
+    welcomeLabel2.setFont(new Font("Segoe UI", Font.BOLD, 28));
+    welcomeLabel2.setForeground(DARK_GREEN);
+    homePanel.add(welcomeLabel2, gbc);
     }
 
     private void setupLayout() {
@@ -175,107 +186,128 @@ public class DashboardFrame extends JFrame {
         mainContentPanel.add(MemberManagementPanel, "MEMBERS");
         mainContentPanel.add(peminjamanManagementPanel, "PEMINJAMAN");
         mainContentPanel.add(pengumumanManagementPanel, "PENGUMUMAN");
+        mainContentPanel.add(pengunjungManagementPanel, "PENGUNJUNG");
         add(mainContentPanel, BorderLayout.CENTER);
     }
 
     private JPanel createSidebar() {
-        JPanel sidebar = new JPanel(new BorderLayout());
-        sidebar.setBackground(SIDEBAR_GREEN);
-        sidebar.setPreferredSize(new Dimension(320, 0));
+    // Panel sidebar utama dengan BorderLayout dan background hijau
+    JPanel sidebar = new JPanel(new BorderLayout());
+    sidebar.setBackground(SIDEBAR_GREEN);
+    sidebar.setPreferredSize(new Dimension(320, 0));
 
-        JPanel userSection = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        userSection.setBackground(DARK_GREEN);
-        userSection.setPreferredSize(new Dimension(0, 80));
+    // Section header untuk menampilkan info user admin
+    JPanel userSection = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    userSection.setBackground(DARK_GREEN);
+    userSection.setPreferredSize(new Dimension(0, 80));
 
-        JLabel userIcon = new JLabel("");
-        userIcon.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        userIcon.setForeground(Color.WHITE);
+    // Label untuk menampilkan admin
+    JLabel userLabel = new JLabel("Admin");
+    userLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+    userLabel.setForeground(Color.WHITE);
+    userLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
-        JLabel userLabel = new JLabel("Admin");
-        userLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        userLabel.setForeground(Color.WHITE);
-        userLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+    userSection.add(userLabel);
 
-        userSection.add(userIcon);
-        userSection.add(userLabel);
+    // Section untuk menu navigasi dengan layout vertical
+    JPanel menuSection = new JPanel();
+    menuSection.setLayout(new BoxLayout(menuSection, BoxLayout.Y_AXIS));
+    menuSection.setBackground(SIDEBAR_GREEN);
+    menuSection.setBorder(BorderFactory.createEmptyBorder(30, 20, 20, 20));
 
-        JPanel menuSection = new JPanel();
-        menuSection.setLayout(new BoxLayout(menuSection, BoxLayout.Y_AXIS));
-        menuSection.setBackground(SIDEBAR_GREEN);
-        menuSection.setBorder(BorderFactory.createEmptyBorder(30, 20, 20, 20));
+    // Tambahkan semua button menu dengan spacing antar button
+    menuSection.add(homeButton);
+    menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
+    menuSection.add(bookListButton);
+    menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
+    menuSection.add(memberListButton);
+    menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
+    menuSection.add(peminjamanButton);
+    menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
+    menuSection.add(pengumumanButton);
+    menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
+    menuSection.add(pengunjungButton);
+    menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        menuSection.add(homeButton);
-        menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
-        menuSection.add(bookListButton);
-        menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
-        menuSection.add(memberListButton);
-        menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
-        menuSection.add(peminjamanButton);
-        menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
-        menuSection.add(pengumumanButton);
-        menuSection.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JPanel bottomSection = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        bottomSection.setBackground(SIDEBAR_GREEN);
-        bottomSection.setBorder(BorderFactory.createEmptyBorder(20, 20, 30, 20));
-        bottomSection.add(logoutButton);
+    // Section untuk button logout di bagian bawah
+    JPanel bottomSection = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    bottomSection.setBackground(SIDEBAR_GREEN);
+    bottomSection.setBorder(BorderFactory.createEmptyBorder(20, 20, 30, 20));
+    bottomSection.add(logoutButton);
 
-        JPanel titleSection = new JPanel();
-        titleSection.setLayout(new BoxLayout(titleSection, BoxLayout.Y_AXIS));
-        titleSection.setBackground(SIDEBAR_GREEN);
-        titleSection.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
+    // Section untuk nama perpustakaan di footer
+    JPanel titleSection = new JPanel();
+    titleSection.setLayout(new BoxLayout(titleSection, BoxLayout.Y_AXIS));
+    titleSection.setBackground(SIDEBAR_GREEN);
+    titleSection.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
-        JLabel titleLabel1 = new JLabel("Layanan Online Perpustakaan");
-        titleLabel1.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        titleLabel1.setForeground(Color.WHITE);
-        titleLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
+    // footer pertama
+    JLabel titleLabel1 = new JLabel("Layanan Online Perpustakaan");
+    titleLabel1.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    titleLabel1.setForeground(Color.WHITE);
+    titleLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel titleLabel2 = new JLabel("Perpustakaan Mari Maca Kab. Karawang");
-        titleLabel2.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        titleLabel2.setForeground(Color.WHITE);
-        titleLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
+    // footer kedua
+    JLabel titleLabel2 = new JLabel("Perpustakaan Mari Maca Kab. Karawang");
+    titleLabel2.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    titleLabel2.setForeground(Color.WHITE);
+    titleLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        titleSection.add(titleLabel1);
-        titleSection.add(titleLabel2);
+    titleSection.add(titleLabel1);
+    titleSection.add(titleLabel2);
 
-        sidebar.add(userSection, BorderLayout.NORTH);
-        sidebar.add(menuSection, BorderLayout.CENTER);
+    // Susun layout sidebar: user section di atas, menu di tengah
+    sidebar.add(userSection, BorderLayout.NORTH);
+    sidebar.add(menuSection, BorderLayout.CENTER);
 
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setBackground(SIDEBAR_GREEN);
-        bottomPanel.add(bottomSection, BorderLayout.NORTH);
-        bottomPanel.add(titleSection, BorderLayout.SOUTH);
+    // Gabungkan bottom section (logout) dan title section jadi satu panel
+    JPanel bottomPanel = new JPanel(new BorderLayout());
+    bottomPanel.setBackground(SIDEBAR_GREEN);
+    bottomPanel.add(bottomSection, BorderLayout.NORTH);
+    bottomPanel.add(titleSection, BorderLayout.SOUTH);
 
-        sidebar.add(bottomPanel, BorderLayout.SOUTH);
+    // Tambahkan bottom panel ke sidebar bagian bawah
+    sidebar.add(bottomPanel, BorderLayout.SOUTH);
 
-        return sidebar;
+    return sidebar;
     }
 
     private void loadSavedLogo() {
-        ImageIcon icon = new ImageIcon(LOGO_PATH);
+    // Load gambar logo dari path yang sudah ditentukan
+    ImageIcon icon = new ImageIcon(LOGO_PATH);
 
-        int width = icon.getIconWidth();
-        int height = icon.getIconHeight();
+    // Ambil ukuran asli gambar logo
+    int width = icon.getIconWidth();
+    int height = icon.getIconHeight();
 
-        int maxWidth = 250;
-        int maxHeight = 250;
+    // Tentukan ukuran maksimal untuk logo 
+    int maxWidth = 250;
+    int maxHeight = 250;
 
-        if (width > maxWidth || height > maxHeight) {
-            double widthRatio = (double) maxWidth / width;
-            double heightRatio = (double) maxHeight / height;
-            double scale = Math.min(widthRatio, heightRatio);
+    // Cek apakah gambar perlu di-resize karena terlalu besar
+    if (width > maxWidth || height > maxHeight) {
+        // Hitung rasio pengecilan untuk width dan height
+        double widthRatio = (double) maxWidth / width;
+        double heightRatio = (double) maxHeight / height;
+        
+        // Pilih rasio terkecil agar gambar tetap proporsional
+        double scale = Math.min(widthRatio, heightRatio);
 
-            int newWidth = (int) (width * scale);
-            int newHeight = (int) (height * scale);
+        // Hitung ukuran baru berdasarkan rasio pengecilan
+        int newWidth = (int) (width * scale);
+        int newHeight = (int) (height * scale);
 
-            Image scaledImage = icon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-            logoLabel.setIcon(new ImageIcon(scaledImage));
-        } else {
-            logoLabel.setIcon(icon);
-        }
-
-        logoLabel.setText("");
-        logoLabel.setPreferredSize(new Dimension(Math.min(width, maxWidth), Math.min(height, maxHeight)));
+        // Resize gambar dengan kualitas smooth dan set ke logoLabel
+        Image scaledImage = icon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        logoLabel.setIcon(new ImageIcon(scaledImage));
+    } else {
+        // set gambar asli ke logoLabel
+        logoLabel.setIcon(icon);
+    }
+    
+    // Set ukuran preferred untuk logoLabel sesuai ukuran final gambar
+    logoLabel.setPreferredSize(new Dimension(Math.min(width, maxWidth), Math.min(height, maxHeight)));
     }
 
     private void setupEvents() {
@@ -284,10 +316,17 @@ public class DashboardFrame extends JFrame {
         memberListButton.addActionListener(e -> showMemberPanel());
         peminjamanButton.addActionListener(e -> showPeminjamanPanel()); 
         pengumumanButton.addActionListener(e -> showPengumumanPanel());
+        pengunjungButton.addActionListener(e -> showPengunjungPanel());
         
         logoutButton.addActionListener(e -> {
-            this.dispose();
-        });;
+            int option = JOptionPane.showConfirmDialog(this,
+                    "Apakah Anda yakin ingin keluar?",
+                    "Konfirmasi Keluar",
+                    JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                this.dispose();
+            }
+        });
     }
 
     private void showHomePanel() {
@@ -314,9 +353,15 @@ public class DashboardFrame extends JFrame {
         setActiveButton(peminjamanButton);
     }
 
-    private void showPengumumanPanel() { // Method baru
+    private void showPengumumanPanel() { 
         CardLayout cardLayout = (CardLayout) mainContentPanel.getLayout();
         cardLayout.show(mainContentPanel, "PENGUMUMAN");
         setActiveButton(pengumumanButton);
+    }
+
+    private void showPengunjungPanel() { 
+        CardLayout cardLayout = (CardLayout) mainContentPanel.getLayout();
+        cardLayout.show(mainContentPanel, "PENGUNJUNG");
+        setActiveButton(pengunjungButton);
     }
 }

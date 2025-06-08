@@ -19,7 +19,7 @@ public class MemberDAO {
             pstmt.setString(3, member.getNoTelepon());
             pstmt.setDate(4, member.getTanggalDaftar());
             pstmt.setString(5, member.getEmail());
-            pstmt.setString(6, member.getStatusAktif());
+            pstmt.setString(6, "1");
 
             int result = pstmt.executeUpdate();
             return result > 0;
@@ -50,7 +50,6 @@ public class MemberDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return members;
     }
 
@@ -87,7 +86,7 @@ public class MemberDAO {
 
     public List<Member> searchMembers(String keyword) {
         List<Member> members = new ArrayList<>();
-        String sql = "SELECT * FROM anggota WHERE nama LIKE ? OR no_telepon LIKE ? OR status_aktif LIKE ? ORDER BY id_anggota";
+        String sql = "SELECT * FROM anggota WHERE nama LIKE ? OR no_telepon LIKE ? OR status_aktif LIKE ? OR Alamat LIKE ? ORDER BY id_anggota";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             String searchPattern = "%" + keyword + "%";
@@ -116,21 +115,8 @@ public class MemberDAO {
         return members;
     }
 
-    public int getTotalMembers() {
-        String sql = "SELECT COUNT(*) as total FROM anggota";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            if (rs.next()) {
-                return rs.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     public int getActiveMembers() {
-        String sql = "SELECT COUNT(*) as total FROM anggota WHERE status_aktif = 'Aktif'";
+        String sql = "SELECT COUNT(*) as total FROM anggota WHERE status_aktif = '1'";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) {
@@ -143,7 +129,7 @@ public class MemberDAO {
     }
 
     public int getInactiveMembers() {
-        String sql = "SELECT COUNT(*) as total FROM anggota WHERE status_aktif = 'Nonaktif'";
+        String sql = "SELECT COUNT(*) as total FROM anggota WHERE status_aktif = '0'";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) {

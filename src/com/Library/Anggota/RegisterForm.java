@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import com.Library.Admin.PasswordUtil;
 
 public class RegisterForm extends JFrame {
 
@@ -152,26 +151,26 @@ public class RegisterForm extends JFrame {
         errorLabel.setText(" "); // Clear error
 
         try (Connection conn = DBConnection.getConnection()) {
-            // 1. Cek apakah id_anggota valid (ada di tabel anggota)
+            //Cek apakah id_anggota valid / ada di tabel anggota
             if (!isIdAnggotaValid(conn, idAnggota)) {
                 errorLabel.setText("ID Anggota tidak ditemukan atau tidak valid.");
                 return;
             }
 
-            // 2. Cek apakah id_anggota sudah punya akun di tabel user
+            //Cek apakah id_anggota sudah punya akun di tabel user
             if (isIdAnggotaRegistered(conn, idAnggota)) {
                 errorLabel.setText("ID Anggota ini sudah memiliki akun terdaftar.");
                 return;
             }
 
-            // 3. Cek apakah username sudah digunakan
+            //Cek apakah username sudah digunakan
             if (isUsernameTaken(conn, username)) {
                 errorLabel.setText("Username '" + username + "' sudah digunakan. Pilih yang lain.");
                 return;
             }
 
             // Jika semua validasi lolos, lakukan registrasi
-            String hashedPassword = PasswordUtil.hashPassword(password); // HASH PASSWORD!
+            String hashedPassword = PasswordUtil.hashPassword(password); 
 
             String sqlInsert = "INSERT INTO user (id_anggota, username, password) VALUES (?, ?, ?)";
             try (PreparedStatement pstmtInsert = conn.prepareStatement(sqlInsert)) {

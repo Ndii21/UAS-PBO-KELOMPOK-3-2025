@@ -11,7 +11,6 @@ public class Peminjaman {
     private Date tanggalPengembalian;
     private String statusPeminjaman;
 
-    // Tambahan untuk menampilkan judul buku dan nama anggota
     private String judulBuku;
     private String namaAnggota;
 

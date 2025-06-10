@@ -85,19 +85,20 @@ public class MemberDAO {
     }
 
     public List<Member> searchMembers(String keyword) {
-        List<Member> members = new ArrayList<>();
-        String sql = "SELECT * FROM anggota WHERE nama LIKE ? OR no_telepon LIKE ? OR status_aktif LIKE ? OR Alamat LIKE ? ORDER BY id_anggota";
-
+    List<Member> members = new ArrayList<>();
+    String sql;
+    // Cek apakah pengguna mencari berdasarkan status
+    if (keyword.equalsIgnoreCase("aktif") || keyword.equalsIgnoreCase("tidak aktif")) {
+        sql = "SELECT * FROM anggota WHERE status_aktif = ? ORDER BY id_anggota";
+        
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            String searchPattern = "%" + keyword + "%";
-            pstmt.setString(1, searchPattern);
-            pstmt.setString(2, searchPattern);
-            pstmt.setString(3, searchPattern);
-            pstmt.setString(4, searchPattern);
+            String statusValue = keyword.equalsIgnoreCase("aktif") ? "1" : "0";
+            pstmt.setString(1, statusValue);
             
-
+            // Eksekusi query khusus status
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
+                //Kode untuk mengisi objek member
                 Member member = new Member();
                 member.setIdAnggota(rs.getInt("id_anggota"));
                 member.setNama(rs.getString("nama"));
@@ -112,8 +113,36 @@ public class MemberDAO {
             e.printStackTrace();
         }
 
-        return members;
+    } else {
+        // search normal
+        sql = "SELECT * FROM anggota WHERE nama LIKE ? OR no_telepon LIKE ? OR Alamat LIKE ? ORDER BY id_anggota";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            String searchPattern = "%" + keyword + "%";
+            //Set parameter placeholder
+            pstmt.setString(1, searchPattern);
+            pstmt.setString(2, searchPattern);
+            pstmt.setString(3, searchPattern);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                //Kode untuk mengisi objek member 
+                Member member = new Member();
+                member.setIdAnggota(rs.getInt("id_anggota"));
+                member.setNama(rs.getString("nama"));
+                member.setAlamat(rs.getString("alamat"));
+                member.setNoTelepon(rs.getString("no_telepon"));
+                member.setTanggalDaftar(rs.getDate("tanggal_daftar"));
+                member.setEmail(rs.getString("email"));
+                member.setStatusAktif(rs.getString("status_aktif"));
+                members.add(member);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+    return members;
+}
 
     public int getActiveMembers() {
         String sql = "SELECT COUNT(*) as total FROM anggota WHERE status_aktif = '1'";

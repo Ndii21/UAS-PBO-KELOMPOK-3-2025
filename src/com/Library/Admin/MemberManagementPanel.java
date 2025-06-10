@@ -363,16 +363,19 @@ public class MemberManagementPanel extends JPanel {
     private void printMemberCard() {
         int selectedRow = memberTable.getSelectedRow();
         if (selectedRow == -1) {
+            // Jika tidak ada yang dipilih, tampilkan peringatan
             JOptionPane.showMessageDialog(this,
                 "Pilih anggota untuk mencetak kartu!",
                 "Peringatan",
                 JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+        // Ambil ID anggota dari baris yang dipilih
         int memberId = (Integer) tableModel.getValueAt(selectedRow, 0);
+        // Cari data lengkap anggota di database berdasarkan ID
         Member selectedMember = findMemberById(memberId);
         
+        // Jika anggota ditemukan, cetak kartu
         if (selectedMember != null) {
             printCard(selectedMember);
         }

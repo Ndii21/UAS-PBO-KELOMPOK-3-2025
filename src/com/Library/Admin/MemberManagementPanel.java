@@ -382,7 +382,9 @@ public class MemberManagementPanel extends JPanel {
     }
     
     private void printCard(Member member) {
+        // Membuat objek PrinterJob untuk mencetak kartu
         PrinterJob job = PrinterJob.getPrinterJob();
+        // Mengatur Printable untuk mencetak kartu anggota
         job.setPrintable(new MemberCardPrintable(member));
         
         if (job.printDialog()) {
@@ -447,7 +449,7 @@ public class MemberManagementPanel extends JPanel {
         public MemberCardPrintable(Member member) {
             this.member = member;
         }
-    
+        
         @Override
         public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) 
             throws PrinterException {

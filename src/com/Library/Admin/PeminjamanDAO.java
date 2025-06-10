@@ -222,7 +222,7 @@ public class PeminjamanDAO {
         return 0;
     }
 
-    // Metode baru untuk mengambil buku yang tersedia
+    // Metode untuk mengambil buku yang tersedia
     public List<PeminjamanDialog.BukuItem> getAvailableBooks() {
         List<PeminjamanDialog.BukuItem> books = new ArrayList<>();
         String sql = "SELECT id_buku, judul_buku FROM buku WHERE status = 'Tersedia' ORDER BY id_buku";

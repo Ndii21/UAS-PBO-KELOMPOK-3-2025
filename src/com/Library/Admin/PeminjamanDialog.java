@@ -113,7 +113,7 @@ public class PeminjamanDialog extends JDialog {
                 tanggalJatuhTempoField.setEditable(false);
                 statusComboBox.setEnabled(false); // Jika sudah kembali, status juga tidak bisa diubah lagi sembarangan
             }
-        } else { 
+        } else { // Mode Tambah 
             loadAvailableBooksToComboBox();
             loadActiveMembersToComboBox();
             tanggalPinjamField.setText(dateFormat.format(new java.util.Date())); // Tanggal hari ini

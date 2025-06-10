@@ -138,7 +138,7 @@ public class Welcome extends JFrame {
             if (nama.isEmpty() || nomor.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Field tidak boleh kosong");
             } else {
-                try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_marimaca_1", "root", "")) {
+                try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_marimaca_2", "root", "")) {
                     String query = "INSERT INTO pengunjung (nama, no_telepon) VALUES (?, ?)";
                     PreparedStatement stmt = conn.prepareStatement(query);
                     stmt.setString(1, nama);
